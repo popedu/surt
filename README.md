@@ -2,55 +2,50 @@
 
 **Reptes de running i trail a prop teu. Sense competir, només per sortir.**
 
-Prototip d'una web app (pensada per al mòbil) on cada poble té els seus reptes: setmanals, mensuals, de temporada o permanents. T'hi apuntes, afegeixes les teves sortides i veus com avances tu i com avança tothom. De moment només hi ha l'Alt Penedès.
+App de mòbil (iPhone i Android) on cada poble té els seus reptes: setmanals, mensuals, de temporada o permanents. T'hi apuntes, les teves sortides hi sumen i veus com avances tu i com avança tothom. De moment només hi ha l'Alt Penedès.
 
-## Com provar-ho
+## Estructura del repositori
 
-Cal tenir [Node.js](https://nodejs.org) instal·lat.
-
-```bash
-npm install
-npm run dev
+```
+mobile/   l'app (React Native + Expo)  ← aquí es treballa
+web/      primer prototip web (Vite + React), només com a referència
 ```
 
-Obre http://localhost:5173. Per veure-ho com al mòbil, a Chrome prem `F12` i activa la vista de dispositiu (`Ctrl+Shift+M`).
+## Com provar l'app al teu mòbil
 
-Per publicar-ho: `npm run build` genera la carpeta `dist/`, que es pot pujar tal qual a Netlify, Vercel o GitHub Pages.
+1. Instal·la **Expo Go** al mòbil (App Store o Google Play).
+2. Al PC (cal [Node.js](https://nodejs.org)):
+   ```bash
+   cd mobile
+   npm install
+   npx expo start
+   ```
+3. Escaneja el codi QR que surt al terminal amb la càmera de l'iPhone (o amb Expo Go a Android). El mòbil i el PC han d'estar a la mateixa xarxa Wi-Fi.
+
+Cada canvi al codi es veu a l'instant al mòbil.
 
 ## Què hi ha fet
 
-- **Entrada en 10 segons**: nom, poble i si surts amb mascota. Sense contrasenyes (de moment).
-- **Explora**: mapa topogràfic amb 8 rutes de mostra de l'Alt Penedès (castells, vinyes...) i reptes ordenats per proximitat al teu poble.
+- **Entrada en 10 segons**: nom, poble (amb la ubicació del mòbil o cercant) i si surts amb mascota.
+- **Explora**: mapa topogràfic amb 8 rutes de mostra (castells, vinyes...). Toques una ruta i veus els seus reptes. Els reptes surten ordenats per proximitat al teu poble.
 - **Reptes** de diferents tipus: desnivell setmanal, nombre de sortides, km al mes, km amb mascota, *Ruta dels 5 castells*, repetir una ruta...
 - **Progrés sense competició**: barra "entre tots" (objectiu comú), companys de repte sense posicions ni medalles, i botó 👏 per enviar ànims.
-- **Afegir sortida** amb un sol botó (＋). Si tries una ruta, s'omplen els km i el desnivell sols.
-- **Comerços**: des del Perfil, un comerç pot crear un repte patrocinat amb premi i veure com quedarà abans de publicar-lo.
+- **Afegir sortida** amb el botó taronja ＋. Si tries una ruta, s'omplen els km i el desnivell sols.
+- **Comerços**: des del Perfil, un comerç pot crear un repte patrocinat amb premi.
 
-> ⚠️ Les dades es guarden només al navegador. Els participants són inventats i els traçats de les rutes són orientatius (no són tracks GPS reals). Els comerços que hi surten són d'exemple.
+> ⚠️ Les dades es guarden només al mòbil. Els participants són inventats i els traçats de les rutes són orientatius (no són tracks GPS reals). Els comerços que hi surten són d'exemple.
 
 ## Decisions
 
-- **Un sol tipus de compte.** Un comerç és un usuari que, a més, crea reptes. Això estalvia pantalles i un segon registre. Quan hi hagi pagaments, s'hi afegirà un petit panell per a comerços.
+- **App nativa i no web**: el que farà que la gent la faci servir és que les activitats del rellotge entrin soles, i això només es pot fer bé des d'una app.
+- **Un sol tipus de compte.** Un comerç és un usuari que, a més, crea reptes.
 - **Premi per a tothom qui acaba, o sorteig entre qui acaba**, mai per al més ràpid. Així el patrocini no trenca la idea de no competir.
-- **Web app i no app de botiga**: arriba a tothom amb un enllaç i es pot instal·lar al mòbil (PWA). Si funciona, després es pot empaquetar per a iOS/Android.
-
-## Estructura
-
-```
-src/
-  App.jsx              navegació i pantalles
-  store.js             dades (avui localStorage; demà backend)
-  logic.js             períodes, progrés, distàncies
-  data/                pobles, rutes i reptes de mostra
-  components/          pantalles i peces de la interfície
-```
 
 ## Propers passos
 
-1. **Comptes reals i dades compartides**: [Supabase](https://supabase.com) (login amb Google/email, base de dades Postgres amb PostGIS per als mapes). Té un pla gratuït.
-2. **Connexió amb Strava** perquè les sortides entrin soles. Strava ja rep dades de COROS, Garmin, Suunto i Polar, i és l'opció més ràpida. Més endavant es poden afegir integracions directes.
-3. **Rutes reals** en GPX (fetes per tu o per clubs locals) i perfil de desnivell.
-4. **Validació automàtica** de "he fet aquesta ruta" comparant el track amb la ruta.
-5. **PWA**: instal·lable al mòbil i amb notificacions ("Et falten 2 km per acabar el repte!").
-6. **Panell per a comerços** amb pagament (Stripe) i estadístiques del seu repte.
-7. Ampliar a altres comarques i esports.
+1. **Sincronització automàtica** amb Apple Salut (iPhone) i Health Connect (Android). Garmin, COROS, Polar i Suunto hi poden enviar les activitats, així que amb una sola integració els cobrim gairebé tots. Necessita una *development build* (a iPhone, compte d'Apple Developer).
+2. **Supabase**: comptes, reptes reals i progrés compartit entre usuaris.
+3. **Rutes reals** en GPX i perfil de desnivell.
+4. **Strava** i integracions directes amb les marques, quan hi hagi usuaris.
+5. **Panell per a comerços** amb pagament i estadístiques.
+6. Ampliar a altres comarques i esports.
